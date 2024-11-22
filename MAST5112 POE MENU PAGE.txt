@@ -1,0 +1,111 @@
+import React, { useState } from 'react';
+import { View, Text, Button, ScrollView, StyleSheet } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+const App = () => {
+  // State for the selected date
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+
+  // Handlers for date picker
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(false);
+    setDate(currentDate);
+  };
+
+  const showDatePicker = () => {
+    setShow(true);
+  };
+
+  return (
+    <ScrollView style={styles.container}>
+      {/* Title */}
+      <Text style={styles.title}>Today's Menu</Text>
+
+      {/* Date Picker */}
+      <View style={styles.datePickerContainer}>
+        <Button onPress={showDatePicker} title="Pick a date for the menu" />
+        {show && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={onChange}
+          />
+        )}
+        <Text style={styles.selectedDate}>Selected Date: {date.toDateString()}</Text>
+      </View>
+
+      {/* Menu Sections */}
+      <View style={styles.menuSection}>
+        <Text style={styles.sectionTitle}>Starters</Text>
+        <Text style={styles.menuItem}>1. Tomato Soup</Text>
+        <Text style={styles.menuItem}>2. Caesar Salad</Text>
+        <Text style={styles.menuItem}>3. Garlic Bread</Text>
+        <Text style={styles.menuItem}>4. Stuffed Mushrooms</Text>
+      </View>
+
+      <View style={styles.menuSection}>
+        <Text style={styles.sectionTitle}>Main Dishes</Text>
+        <Text style={styles.menuItem}>1. Grilled Chicken</Text>
+        <Text style={styles.menuItem}>2. Beef Steak</Text>
+        <Text style={styles.menuItem}>3. Vegetable Stir Fry</Text>
+        <Text style={styles.menuItem}>4. Spaghetti Bolognese</Text>
+      </View>
+
+      <View style={styles.menuSection}>
+        <Text style={styles.sectionTitle}>Desserts</Text>
+        <Text style={styles.menuItem}>1. Chocolate Cake</Text>
+        <Text style={styles.menuItem}>2. Ice Cream</Text>
+        <Text style={styles.menuItem}>3. Fruit Salad</Text>
+        <Text style={styles.menuItem}>4. Cheesecake</Text>
+      </View>
+
+      <View style={styles.menuSection}>
+        <Text style={styles.sectionTitle}>Drinks</Text>
+        <Text style={styles.menuItem}>1. Lemonade</Text>
+        <Text style={styles.menuItem}>2. Iced Tea</Text>
+        <Text style={styles.menuItem}>3. Coffee</Text>
+        <Text style={styles.menuItem}>4. Sparkling Water</Text>
+      </View>
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f8f8f8',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  datePickerContainer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  selectedDate: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#333',
+  },
+  menuSection: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  menuItem: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+});
+
+export default App;

@@ -1,0 +1,132 @@
+import React, { useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+
+const ClientMenuScreen = () => {
+  // Sample menu data
+  const [menuItems, setMenuItems] = useState([
+    { id: '1', name: 'Starter - Caesar Salad', price: 5.99, selected: false },
+    { id: '2', name: 'Main - Grilled Chicken', price: 12.99, selected: false },
+    { id: '3', name: 'Dessert - Chocolate Cake', price: 6.99, selected: false },
+    { id: '4', name: 'Drink - Lemonade', price: 2.99, selected: false },
+    { id: '5', name: 'Main - Pasta Alfredo', price: 10.99, selected: false },
+    { id: '6', name: 'Starter - Tomato Soup', price: 4.99, selected: false },
+    { id: '7', name: 'Dessert - Apple Pie', price: 5.49, selected: false },
+    { id: '8', name: 'Drink - Iced Tea', price: 1.99, selected: false },
+  ]);
+
+  // Calculate the total cost based on selected items
+  const calculateTotal = () => {
+    return menuItems.reduce((acc, item) => {
+      if (item.selected) {
+        return acc + item.price;
+      }
+      return acc;
+    }, 0).toFixed(2);
+  };
+
+  // Toggle item selection
+  const toggleSelection = (itemId) => {
+    setMenuItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === itemId ? { ...item, selected: !item.selected } : item
+      )
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Chef's Menu</Text>
+
+      {/* List of menu items */}
+      <FlatList
+        data={menuItems}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.menuItem} onPress={() => toggleSelection(item.id)}>
+            <View style={styles.menuItemRow}>
+              <Text style={[styles.menuItemText, item.selected && styles.selectedItem]}>
+                {item.name} - R{item.price.toFixed(2)}
+              </Text>
+              <Text style={[styles.checkbox, item.selected && styles.selectedCheckbox]}>
+                {item.selected ? '✓' : ' '}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+
+      {/* Display total cost */}
+      <View style={styles.totalContainer}>
+        <Text style={styles.totalText}>Total: R{calculateTotal()}</Text>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f8f8f8',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  menuItem: {
+    padding: 15,
+    backgroundColor: '#fff',
+    marginBottom: 10,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  menuItemRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  menuItemText: {
+    fontSize: 16,
+  },
+  selectedItem: {
+    fontWeight: 'bold',
+    color: '#28a745',
+  },
+  checkbox: {
+    fontSize: 18,
+    width: 25,
+    height: 25,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    textAlign: 'center',
+    lineHeight: 25,
+  },
+  selectedCheckbox: {
+    borderColor: '#28a745',
+    backgroundColor: '#d4edda',
+    color: '#28a745',
+  },
+  totalContainer: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+});
+
+export default ClientMenuScreen;

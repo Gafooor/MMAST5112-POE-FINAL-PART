@@ -1,0 +1,65 @@
+import React from 'react';
+import { Button, View, Text, Alert, BackHandler } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+// HomeScreen component with Continue and Exit buttons
+function HomeScreen({ navigation }) {
+  const handleExitApp = () => {
+    Alert.alert(
+      "Exit App",
+      "Are you sure you want to exit?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        {
+          text: "Exit",
+          onPress: () => BackHandler.exitApp(),
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Continue"
+        onPress={() => navigation.navigate('NextScreen')}
+      />
+      <Button
+        title="Exit"
+        color="red"
+        onPress={handleExitApp}
+      />
+    </View>
+  );
+}
+
+// NextScreen component for Continue button
+function NextScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>This is the Next Screen!</Text>
+    </View>
+  );
+}
+
+const Stack = createStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="NextScreen" component={NextScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
